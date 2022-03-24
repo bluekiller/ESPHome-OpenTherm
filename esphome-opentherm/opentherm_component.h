@@ -78,7 +78,7 @@ public:
   unsigned long mock_response() {
     switch (step_) {
       case Step::SetReadStatus:
-        return ot.buildResponse(OpenThermMessageType::READ_ACK, OpenThermMessageID::Status, B00001110);
+        return ot.buildResponse(OpenThermMessageType::READ_ACK, OpenThermMessageID::Status, B00000110);
       case Step::SetCHSetpoint:
         return ot.buildResponse(OpenThermMessageType::WRITE_ACK, OpenThermMessageID::TSet, 0);
       case Step::SetDHWSetpoint:
@@ -118,7 +118,7 @@ public:
           flame->publish_state(is_flame_on); 
           hotWaterClimate->action = is_hot_water_active ? ClimateAction::CLIMATE_ACTION_HEATING : ClimateAction::CLIMATE_ACTION_OFF;
           hotWaterClimate->publish_state();
-          heatingWaterClimate->action = is_central_heating_active && is_flame_on ? ClimateAction::CLIMATE_ACTION_HEATING : ClimateAction::CLIMATE_ACTION_OFF;
+          heatingWaterClimate->action = is_central_heating_active && is_flame_on ? ClimateAction::CLIMATE_ACTION_HEATING : (is_central_heating_active ? ClimateAction::CLIMATE_ACTION_IDLE : ClimateAction::CLIMATE_ACTION_OFF);
           heatingWaterClimate->publish_state();
           break;
         }
